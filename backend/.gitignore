@@ -1,0 +1,60 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Editor folders
+.vscode/
+.idea/
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python dotenv
+.env
+.env.*
+
+# Compiled files
+*.so
+
+# Poetry
+poetry.lock
+# Se preferir versionar o poetry.lock, remova a linha acima
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Docker
+**/db.sqlite3
+*.pid
+*.seed
+docker-compose.override.yml
+
+# MyPy / Pylint / etc
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# SQLite (caso use)
+*.sqlite3
+
+# VSCode Workspace
+*.code-workspace
