@@ -1,12 +1,18 @@
-# Dockerfile
 FROM python:3.12-slim
 
+# Define o diretório principal de trabalho
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock* /app/
+# Copia os arquivos de dependência
+COPY pyproject.toml poetry.lock* ./
 
-RUN pip install poetry && poetry config virtualenvs.create false && poetry install --no-root --without dev
+# Instala o Poetry e dependências
+RUN pip install poetry && \
+    poetry config virtualenvs.create false && \
+    poetry install --no-root --without dev
 
-COPY . /app/
+# Copia o código da aplicação 
+COPY . .
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Expõe a porta e inicia o servidor
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
