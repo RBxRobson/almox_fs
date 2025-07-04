@@ -2,26 +2,29 @@ services:
   db:
     image: postgres:15
     restart: always
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: sua_senha
-      POSTGRES_DB: db_almoxarifado
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
   backend:
-    build: .
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    build:
+      context: .
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
       - .:/app
     ports:
       - "8000:8000"
     depends_on:
       - db
-    environment:
-      DATABASE_URL: postgresql+psycopg2://admin:sua_senha@db:5432/db_almoxarifado
+    env_file:
+      - .env
 
 volumes:
   postgres_data:
