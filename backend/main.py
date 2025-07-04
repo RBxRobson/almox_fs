@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routes.main import router as api_router
+from routes.main import router as api_router
 
 app = FastAPI(title="Almoxarifado API")
 
