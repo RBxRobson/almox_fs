@@ -1,7 +1,7 @@
-from fastapi import FastAPI
-from routes import users
+from fastapi import APIRouter
+from routes import users, auth
 
-app = FastAPI()
+router = APIRouter()
 
-# Rota users, criação, listagem e detalhes do usuário ativo (Protegida)
-app.include_router(users.router)
+router.include_router(users.router)
+router.include_router(auth.router)
