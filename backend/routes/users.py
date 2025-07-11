@@ -5,15 +5,15 @@ from typing import List
 from core.database import get_db
 from services.user import get_current_user
 from models.user import User, UserRole
-from schemas.user import UserCreate, UserRead, UserMe
+from schemas.user import UserCreate, UserRead
 from services import user as user_service
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
 # 🔹 Acesso: qualquer usuário autenticado
-@router.get("/me", response_model=UserMe)
+@router.get("/me", response_model=UserRead)
 def get_me(current_user: User = Depends(get_current_user)):
-    return {
+    return {  
         "id": current_user.id,
         "full_name": current_user.full_name,
         "username": current_user.username,
