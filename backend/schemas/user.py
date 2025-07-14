@@ -16,8 +16,9 @@ class UserCreate(UserBase):
     password: str = Field(..., min_length=8)
 
 # 🔹 Atualização de senha
-class UserUpdatePassword(BaseModel):
-    password: str = Field(..., min_length=8)
+class PasswordUpdate(BaseModel):
+    old_password: str = Field(..., min_length=8)
+    new_password: str = Field(..., min_length=8)
 
 # 🔹 Login
 class UserLogin(BaseModel):
