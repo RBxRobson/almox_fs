@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
 from core.database import get_db
 from services.user import get_current_user
 from models.user import User, UserRole
-from schemas.user import UserCreate, UserRead
+from schemas.user import UserCreate, UserRead, PasswordUpdate
+from core.security import verify_password
 from services import user as user_service
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -20,6 +21,18 @@ def get_me(current_user: User = Depends(get_current_user)):
         "role": current_user.role,
         "created_at": current_user.created_at,
     }
+
+# 🔹 Acesso: qualquer usuário autenticado, alterar senha
+@router.put("/me/password", status_code=status.HTTP_204_NO_CONTENT)
+def change_password(
+    data: PasswordUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    if not verify_password(data.old_password, current_user.password_hash):
+        raise HTTPException(status_code=400, detail="Senha atual incorreta")
+
+    user_service.update_user_password(db, current_user.id, data.new_password)
 
 # 🔹 Acesso: apenas admin pode criar usuários
 @router.post("/", response_model=UserRead, status_code=status.HTTP_201_CREATED)
