@@ -13,6 +13,7 @@ class Category(Base):
     created_by = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     created_at = Column(DateTime, server_default=func.now())
 
+    materials = relationship("Material", back_populates="category")
     creator = relationship("User", backref="categories")
 
 
