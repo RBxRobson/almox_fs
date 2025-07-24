@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from core.database import SessionLocal
-from models.user import User, UserRole
+from models import User
+from utils.enums import UserRole
 from services.user import get_password_hash
 import uuid
 

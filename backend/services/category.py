@@ -3,8 +3,8 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 
-from models.category import Category
-from models.user import User, UserRole
+from models import Category, User
+from utils.enums import UserRole
 from schemas.category import CategoryCreate
 
 

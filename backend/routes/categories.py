@@ -9,7 +9,7 @@ from services.category import (
 )
 from services.user import get_current_user
 from core.database import get_db
-from models.user import User, UserRole
+from models import User
 
 router = APIRouter(
     prefix="/categories",

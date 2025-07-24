@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Depends
-from models.user import User
+from models import User
 from schemas.user import UserCreate
 from passlib.context import CryptContext
 from uuid import UUID

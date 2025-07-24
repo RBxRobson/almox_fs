@@ -4,7 +4,8 @@ from typing import List
 
 from core.database import get_db
 from services.user import get_current_user
-from models.user import User, UserRole
+from models import User
+from utils.enums import UserRole
 from schemas.user import UserCreate, UserRead, PasswordUpdate
 from core.security import verify_password
 from services import user as user_service
