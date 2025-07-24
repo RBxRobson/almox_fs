@@ -1,13 +1,12 @@
-# schemas/material.py
 from uuid import UUID
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
+from typing import Optional
 
 
 class MaterialCreate(BaseModel):
     name: str = Field(..., min_length=2, max_length=100)
-    category_id: UUID
-
+    category_name: Optional[str] = None  # Agora é opcional
 
 class MaterialUpdate(BaseModel):
     name: str = Field(..., min_length=2, max_length=100)
@@ -16,9 +15,8 @@ class MaterialUpdate(BaseModel):
 class MaterialRead(BaseModel):
     id: UUID
     name: str
-    category_id: str
+    category: str
     created_at: datetime
     created_by: str
-
-    class Config:
-        orm_mode = True
+   
+    model_config = ConfigDict(from_attributes=True) 

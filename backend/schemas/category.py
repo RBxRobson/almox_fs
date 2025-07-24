@@ -1,5 +1,5 @@
 from uuid import UUID
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
 
@@ -15,5 +15,5 @@ class CategoryRead(BaseModel):
     created_at: datetime
     created_by: str
 
-    class Config:
-        orm_mode = True
+       
+    model_config = ConfigDict(from_attributes=True) 
