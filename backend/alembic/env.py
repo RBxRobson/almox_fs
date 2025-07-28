@@ -4,8 +4,7 @@ from alembic import context
 
 from core.config import settings
 from core.database import Base
-from models.user import User
-from models.category import Category
+from models import Material, User, Category
 
 config = context.config
 

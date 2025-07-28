@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from models.user import User
+from models import User
 from core.security import create_access_token, verify_password
 
 # 🔐 Autentica o usuário e retorna o token de acesso

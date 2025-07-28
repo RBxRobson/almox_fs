@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String, Enum, DateTime
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from utils.enums import UserRole
 import uuid
@@ -8,6 +9,9 @@ from core.database import Base
 
 class User(Base):
     __tablename__ = "users"
+
+    materials_created = relationship("Material", back_populates="creator")
+    categories_created = relationship("Category", back_populates="creator")
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     full_name = Column(String, nullable=True)
