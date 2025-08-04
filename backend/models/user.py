@@ -12,6 +12,7 @@ class User(Base):
 
     materials_created = relationship("Material", back_populates="creator")
     categories_created = relationship("Category", back_populates="creator")
+    movements = relationship("Movement", back_populates="inserted_by") 
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     full_name = Column(String, nullable=True)

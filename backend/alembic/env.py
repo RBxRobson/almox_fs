@@ -4,7 +4,7 @@ from alembic import context
 
 from core.config import settings
 from core.database import Base
-from models import Material, User, Category
+from models import Material, User, Category, Movement, Stock
 
 config = context.config
 
@@ -14,7 +14,7 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
-    url = settings.database_url
+    url = settings.database_url 
     context.configure(
         url=url,
         target_metadata=target_metadata,
