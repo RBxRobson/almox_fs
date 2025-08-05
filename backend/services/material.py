@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session, joinedload
 from models import Material, Category, User, Stock
 from schemas.material import MaterialCreate, MaterialUpdate, MaterialRead
 from uuid import UUID
-from typing import List
+from typing import List, Optional
 
 
 def create_material(db: Session, data: MaterialCreate, current_user: User) -> MaterialRead:
@@ -58,22 +58,33 @@ def create_material(db: Session, data: MaterialCreate, current_user: User) -> Ma
         created_at=new_material.created_at
     )
 
-def get_all_materials(db: Session) -> List[MaterialRead]:
-    materials = (
+def get_all_materials(
+    db: Session, category: Optional[str] = None, name: Optional[str] = None
+) -> List[MaterialRead]:
+    query = (
         db.query(Material)
         .options(joinedload(Material.creator), joinedload(Material.category))
-        .all()
     )
+
+    # Filtra por categoria (case insensitive)
+    if category:
+        query = query.filter(Material.category.has(name__ilike=f"%{category}%"))
+
+    # Filtra por nome (case insensitive)
+    if name:
+        query = query.filter(Material.name.ilike(f"%{name}%"))
+
+    materials = query.all()
 
     return [
         MaterialRead(
-            id=mat.id,
-            name=mat.name,
-            created_by=mat.creator.full_name,
-            category=mat.category.name,
-            created_at=mat.created_at
+            id=m.id,
+            name=m.name,
+            created_by=m.creator.full_name if m.creator else "Desconhecido",
+            category=m.category.name if m.category else "NA",
+            created_at=m.created_at
         )
-        for mat in materials
+        for m in materials
     ]
 
 
