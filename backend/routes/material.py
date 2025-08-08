@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, status, HTTPException, Query
 from sqlalchemy.orm import Session
 from uuid import UUID
-from typing import List
+from typing import List, Optional
 
 from schemas.material import (
     MaterialCreate,
@@ -27,10 +27,12 @@ router = APIRouter(
 
 @router.get("/", response_model=List[MaterialRead])
 def list_materials(
+    category: Optional[str] = Query(None, description="Filtrar por categoria"),
+    name: Optional[str] = Query(None, description="Filtrar por nome do material"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    return get_all_materials(db)
+    return get_all_materials(db, category=category, name=name)
 
 
 @router.post("/", response_model=MaterialRead, status_code=status.HTTP_201_CREATED)
