@@ -1,21 +1,33 @@
 from sqlalchemy.orm import Session, joinedload
-from models import Stock, Material
+from models import Stock
 from schemas.stock import StockRead
-from typing import List
+from typing import List, Optional
 
 
-def get_all_stocks(db: Session) -> List[StockRead]:
-    stocks = (
+def get_all_stock(
+    db: Session, category: Optional[str] = None, name: Optional[str] = None
+) -> List[StockRead]:
+    query = (
         db.query(Stock)
-        .options(joinedload(Stock.material))
-        .all()
+        .options(joinedload(Stock.material).joinedload("category"))
     )
+
+    # Filtra por categoria
+    if category:
+        query = query.filter(Stock.material.has(category.has(name__ilike=f"%{category}%")))
+
+    # Filtra por nome
+    if name:
+        query = query.filter(Stock.material.has(name.ilike(f"%{name}%")))
+
+    stock_items = query.all()
 
     return [
         StockRead(
-            material_id=stock.material.id,
-            material_name=stock.material.name,
-            value=stock.value
+            id=s.id,
+            material=s.material.name if s.material else "Desconhecido",
+            value=s.value,
+            category=s.material.category.name if s.material and s.material.category else "NA"
         )
-        for stock in stocks
+        for s in stock_items
     ]
